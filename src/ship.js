@@ -8,7 +8,7 @@ import * as dat from 'dat.gui';
 
 let camera, scene, renderer;
 let controls, water, sun;
-let currentPos=0;
+let currentPos = 0;
 
 const canvas = document.querySelector('canvas.webgl');
 // const gui = new dat.GUI();
@@ -19,18 +19,29 @@ class Boat {
   constructor() {
     loader.load('assets/boat/scene.gltf', (gltf) => {
       scene.add(gltf.scene);
-      gltf.scene.scale.set(50, 50, 50);
-      gltf.scene.position.set(5, 13, 50);
-      gltf.scene.rotation.y = 1.54;
+      gltf.scene.scale.set(0.005, 0.005, 0.005);
+      gltf.scene.position.set(15, 6, 0);
       this.boat = gltf.scene;
+
+      // const shipPos = gui.addFolder('shipPos');
+      // shipPos.add(gltf.scene.position, 'x').min(-1000).max(1000).step(0.1);
+      // shipPos.add(gltf.scene.position, 'y').min(-1000).max(1000).step(0.1);
+      // shipPos.add(gltf.scene.position, 'z').min(-1000).max(1000).step(0.1);
+      // shipPos.open();
+
+      // const shipRot = gui.addFolder('shipRot');
+      // shipRot.add(gltf.scene.rotation, 'x').min(0).max(1000).step(0.1);
+      // shipRot.add(gltf.scene.rotation, 'y').min(0).max(1000).step(0.1);
+      // shipRot.add(gltf.scene.rotation, 'z').min(0).max(1000).step(0.1);
+      // shipRot.open();
     });
   }
 
   update() {
     if (this.boat) {
       console.log(this.boat.rotation.y);
-      this.boat.rotation.y = 2.5-currentPos;
-      this.boat.position.z -= 1;
+      this.boat.rotation.y = -0.5 + currentPos;
+      this.boat.position.z -= 0.5;
     }
   }
 }
@@ -56,7 +67,7 @@ async function init() {
     1,
     20000
   );
-  camera.position.set(-20, 20, 150);
+  camera.position.set(0,30, 100);
   // const cameraPos = gui.addFolder('cameraPos');
   // cameraPos.add(camera.position, 'x').min(-1000).max(1000).step(0.1);
   // cameraPos.add(camera.position, 'y').min(-1000).max(1000).step(0.1);
@@ -139,7 +150,7 @@ async function init() {
   window.addEventListener('resize', onWindowResize);
 
   window.addEventListener('mousemove', function (e) {
-      currentPos = e.pageX / 1000;
+    currentPos = e.pageX / 1000;
   });
 }
 
@@ -153,7 +164,7 @@ function animate() {
   requestAnimationFrame(animate);
   render();
   boat.update();
-  camera.position.z -= 1;
+  camera.position.z -= 0.5;
 }
 
 function render() {
